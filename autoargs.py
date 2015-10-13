@@ -3,8 +3,15 @@ import sys
 import imp
 import inspect
 import collections
+import shlex
 
-def autoparser_fn(fn, name=None, base_parser=None):
+def cast(val, types):
+    for typ, caster in types.items():
+        if isinstance(val, typ):
+            val = caster(val)
+    return val
+
+def autoparser(fn, name=None, base_parser=None):
     name = fn.__name__ if name is None else name
     if base_parser is None:
         parser = argparse.ArgumentParser(prog=name, description=fn.__doc__)
@@ -19,7 +26,7 @@ def autoparser_fn(fn, name=None, base_parser=None):
     for name, param in sig.parameters.items():
         assert not name.startswith("-")
         kwargs = {}
-        if (param.kind in positional_kinds and 
+        if (param.kind in positional_kinds and
             param.default is inspect._empty):
             options = (name,)
         elif param.kind in keyword_kinds:
@@ -41,20 +48,12 @@ def autoparser_fn(fn, name=None, base_parser=None):
         parser.add_argument(*options, **kwargs)
     return parser
 
-def autoparser_mod(module, name=None):
-    pass
-
-def autoparse(obj, name=None, args=None):
-    if isinstance(obj, collections.Callable):
-        parser = autoparser_fn(obj, name=name)
-        return parser.parse_args(args)
-    else:
-        raise NotImplementedError("haven't finished modules yet...")
-
-def autorun(fn, name=None, args=None): # todo: modules?
-    parsed = autoparse(fn)
+def autocall(fn, args):
+    args = cast(args, {str: shlex.split})
+    parser = autoparser(fn)
+    parsed = parser.parse_args(args)
     kwargs = vars(parsed)
-    args = ()
+    args = () # todo: var positional? kwargs?
     sig = inspect.signature(fn)
     for name, param in sig.parameters.items():
         if name not in kwargs: continue
