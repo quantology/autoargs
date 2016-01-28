@@ -63,13 +63,23 @@ def autocall(fn, args):
             args += tuple(kwargs.pop(name))
     return fn(*args, **kwargs)
 
-def automodule():
+def automodule(argv):
     top_parser = argparse.ArgumentParser(prog="autoargs", description="")
     top_parser.add_argument("script", help="<path to script>[:fn_name]")
-    top_args, other_args = top_parser.parse_known_args()
+    top_args, other_args = top_parser.parse_known_args(argv)
     script = top_args.script
     if ":" in script:
         script, fn_name = script.rsplit(":", 1)
     else:
         fn_name = "main"
-    module = imp.load_source(script, script)
+    if ".py" in script: # given source
+        module = imp.load_source(script, script)
+    else:
+        fp, path, desc = imp.find_module(script)
+        try:
+            module = imp.load_module(script, fp, path, desc)
+        finally:
+            if fp: fp.close()
+    fn = getattr(module, fn_name)
+    return autocall(fn, other_args)
+
