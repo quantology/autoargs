@@ -5,6 +5,8 @@ import inspect
 import collections
 import shlex
 
+__version__ = "0.0.1"
+
 def cast(val, types):
     for typ, caster in types.items():
         if isinstance(val, typ):
