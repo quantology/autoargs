@@ -28,7 +28,7 @@ with open("README.md", "r") as fp:
 setup(name="autoargs",
       version=autoargs.__version__,
       author="Michael Tartre",
-      author_email="mtartre@gmail.com",
+      author_email="metaperture@gmail.com",
       url="https://github.com/metaperture/autoargs",
       py_modules=["autoargs"],
       description="Automatic Arg parsing",
