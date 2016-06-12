@@ -73,6 +73,8 @@ def autoparser(func, name=None, base_parser=None):
         if param.annotation is not EMPTY:
             if isinstance(param.annotation, collections.Callable):
                 kwargs['type'] = param.annotation
+                if hasattr(param.annotation, "__name__"):
+                    kwargs['help'] = param.annotation.__name__
             elif isinstance(param.annotation, str):
                 kwargs['help'] = param.annotation
             elif isinstance(param.annotation, collections.Iterable):

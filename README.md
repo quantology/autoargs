@@ -52,3 +52,4 @@ Some things to note:
    - especially on recursive autocall and dispatchers (it's really cool, but a bit arcane)
  - add more examples
  - better readme...
+ - custom class for annotating args that lets you do more than one thing at once
