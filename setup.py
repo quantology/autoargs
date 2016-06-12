@@ -15,7 +15,7 @@ classifiers = [
 with open("README.md", "r") as fp:
     long_description = fp.read()
 
-setup(name="six",
+setup(name="autoargs",
       version=autoargs.__version__,
       author="Michael Tartre",
       author_email="mtartre@gmail.com",
