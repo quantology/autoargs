@@ -23,18 +23,18 @@ Have you ever felt like using argparse pulled you out of your Pythonic comfort z
     ...     elif op == "mul":
     ...         return product(*args)
     >>> aggregate.cmd(["--help"])
-    usage: aggregate [-h] --op {mul,sum} [args [args ...]]
+    usage: aggregate [-h] --op {sum,mul} [args [args ...]]
     
     positional arguments:
-      args
+      args            float
     
     optional arguments:
       -h, --help      show this help message and exit
-      --op {mul,sum}
-
+      --op {sum,mul}
+    
     >>> aggregate.cmd("--op mul 1 2 3 4")
     24.0
-    
+
 Want to expose all of your modules functions to the command line, with nice parsers? That should be easy, right?
 
     if __name__ == "__main__":
@@ -53,3 +53,4 @@ Some things to note:
  - add more examples
  - better readme...
  - custom class for annotating args that lets you do more than one thing at once
+ - if you have any ideals, send me a note or open an issue on the github at https://github.com/metaperture/autoargs
